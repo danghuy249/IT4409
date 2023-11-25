@@ -40,7 +40,7 @@ const createUser = (newUser) => {
 
 const loginUser = (userLogin) => {
     return new Promise(async (resolve, reject) => {
-        const { email, password, confirmPassword } = userLogin;
+        const { email, password } = userLogin;
 
         try {
             const checkEmail = await User.findOne({
@@ -52,7 +52,6 @@ const loginUser = (userLogin) => {
                     message: 'The email is not defined'
                 })
             }
-
             const comparePassword = bcrypt.compareSync(password, checkEmail.password);
 
             if (!comparePassword) {
@@ -105,11 +104,17 @@ const updateUser = (id, data) => {
             const checkEmail = await User.findOne({
                 email: data.email
             })
+            
             if (checkEmail != null && checkEmail.id != checkUser.id) {
                 resolve({
                     status: 'OK',
                     message: 'Email is already use'
                 })
+            }
+
+            if(data.password){
+                const password = data.password;
+                data.password = bcrypt.hashSync(password, 10)
             }
 
             const updatedUser = await User.findByIdAndUpdate(id, data, { new: true });
@@ -201,6 +206,32 @@ const getDetailUser = (id) => {
     })
 }
 
+const refreshToken = (id) => {
+    return new Promise(async (resolve, reject) => {
+        try {
+            const user = await User.findOne({
+                _id: id
+            })
+
+            if(user === null){
+                resolve({
+                    status: 'OK',
+                    message: 'User is not exist'
+                })
+            }
+
+            resolve({
+                status: 'OK',
+                message: 'GET USER SUCCESS',
+                data: user
+            })
+
+        } catch (e) {
+            reject(e);
+        }
+    })
+}
+
 
 
 
@@ -210,5 +241,6 @@ module.exports = {
     updateUser,
     deleteUser,
     getAllUser,
-    getDetailUser
+    getDetailUser,
+    refreshToken
 }
