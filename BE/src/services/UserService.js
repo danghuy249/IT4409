@@ -5,7 +5,7 @@ const { generalAccessToken, generalRefreshToken } = require("./JwtService");
 
 const createUser = (newUser) => {
     return new Promise(async (resolve, reject) => {
-        const { name, email, password, confirmPassword, phone } = newUser;
+        const { email, password, confirmPassword } = newUser;
 
         try {
             const checkEmail = await User.findOne({
@@ -13,17 +13,15 @@ const createUser = (newUser) => {
             })
             if (checkEmail != null) {
                 resolve({
-                    status: 'OK',
+                    status: 'ERR',
                     message: 'Email is already use'
                 })
             }
 
             const hash = bcrypt.hashSync(password, 10)
             const createdUser = await User.create({
-                name,
                 email,
                 password: hash,
-                phone
             })
             if (createUser) {
                 resolve({
@@ -48,15 +46,15 @@ const loginUser = (userLogin) => {
             })
             if (checkEmail === null) {
                 resolve({
-                    status: 'OK',
-                    message: 'The email is not defined'
+                    status: 'ERR',
+                    message: 'Email is not defined'
                 })
             }
             const comparePassword = bcrypt.compareSync(password, checkEmail.password);
 
             if (!comparePassword) {
                 resolve({
-                    status: 'OK',
+                    status: 'ERR',
                     message: 'Password is incorrect'
                 })
             }
@@ -96,7 +94,7 @@ const updateUser = (id, data) => {
 
             if(checkUser === null){
                 resolve({
-                    status: 'OK',
+                    status: 'ERR',
                     message: 'User is not exist'
                 })
             }
@@ -107,7 +105,7 @@ const updateUser = (id, data) => {
             
             if (checkEmail != null && checkEmail.id != checkUser.id) {
                 resolve({
-                    status: 'OK',
+                    status: 'ERR',
                     message: 'Email is already use'
                 })
             }
@@ -143,7 +141,7 @@ const deleteUser = (id) => {
 
             if(checkUser === null){
                 resolve({
-                    status: 'OK',
+                    status: 'ERR',
                     message: 'User is not exist'
                 })
             }
@@ -189,7 +187,7 @@ const getDetailUser = (id) => {
 
             if(user === null){
                 resolve({
-                    status: 'OK',
+                    status: 'ERR',
                     message: 'User is not exist'
                 })
             }
@@ -206,31 +204,7 @@ const getDetailUser = (id) => {
     })
 }
 
-const refreshToken = (id) => {
-    return new Promise(async (resolve, reject) => {
-        try {
-            const user = await User.findOne({
-                _id: id
-            })
 
-            if(user === null){
-                resolve({
-                    status: 'OK',
-                    message: 'User is not exist'
-                })
-            }
-
-            resolve({
-                status: 'OK',
-                message: 'GET USER SUCCESS',
-                data: user
-            })
-
-        } catch (e) {
-            reject(e);
-        }
-    })
-}
 
 
 
