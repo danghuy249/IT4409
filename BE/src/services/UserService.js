@@ -216,5 +216,4 @@ module.exports = {
     deleteUser,
     getAllUser,
     getDetailUser,
-    refreshToken
 }
