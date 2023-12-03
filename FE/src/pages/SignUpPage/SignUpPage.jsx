@@ -1,11 +1,15 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Image } from 'antd';
 import { EyeFilled, EyeInvisibleFilled } from '@ant-design/icons';
 import { WrapperContainerLeft, WrapperContainerRight, WrapperTextLight } from './style';
 import InputForm from '../../components/InputForm/InputForm';
 import ButtonComponent from '../../components/ButtonComponent/ButtonComponent';
 import imageLogo from '../../assets/images/logo-login.png'
+import * as userService from '../../services/UserService'
+import * as message from '../../components/Message/Message'
 import { useNavigate } from 'react-router-dom';
+import { useMutationHooks } from '../../hooks/useMutationHook';
+import Loading from '../../components/LoadingComponent/Loading';
 const SignUpPage = () => {
     const navigate = useNavigate();
     const [isShowPassword, setIsShowPassword] = useState(false);
@@ -18,7 +22,21 @@ const SignUpPage = () => {
     const handleNavigateSignIn = () => {
         navigate("/sign-in")
     }
-
+    
+     // call API
+     const mutation = useMutationHooks(
+        data => userService.signupUser(data)
+    )
+    const {data, isPending, isSuccess, isError} = mutation
+    console.log(mutation);
+    useEffect(() => {
+        if(isSuccess) {
+            message.success();
+            handleNavigateSignIn();
+        }else if(isError) {
+            message.error();
+        }
+    }, [isSuccess, isError])
     //handle input
     const handleOnChangeEmail = (value) => {
         setEmail(value);
@@ -31,6 +49,14 @@ const SignUpPage = () => {
     const handleOnchangeConfirmPassword = (value) => {
         setConfirmPassword(value);
     }
+
+    const handleSignUp = () => {
+        mutation.mutate({
+            email, password, confirmPassword
+        })
+        // console.log('signUp', email, password, confirmPassword);
+    }
+
     return (
         <div
             style={{
@@ -91,20 +117,24 @@ const SignUpPage = () => {
                         value={confirmPassword} onChange={handleOnchangeConfirmPassword}
                         />
                     </div>
-                      <ButtonComponent
-                          disabled={!email.length || !password.length || !confirmPassword.length}
-                          size={40}
-                          styleButton={{
-                              background: 'rgb(255, 57, 69)',
-                              height: '48px',
-                              width: '100%',
-                              border: 'none',
-                              borderRadius: '4px',
-                              margin: '26px 0 10px',
-                          }}
-                          textButton={'Đăng ký'}
-                          styleTextButton={{ color: '#fff', fontSize: '15px', fontWeight: '700' }}
-                      ></ButtonComponent>
+                    {data?.status === 'ERR' && <span style={{color: 'red'}}>{data?.message}</span>}
+                    <Loading isLoading={isPending}>
+                        <ButtonComponent
+                            disabled={!email.length || !password.length || !confirmPassword.length}
+                            onClick={handleSignUp}
+                            size={40}
+                            styleButton={{
+                                background: 'rgb(255, 57, 69)',
+                                height: '48px',
+                                width: '100%',
+                                border: 'none',
+                                borderRadius: '4px',
+                                margin: '26px 0 10px',
+                            }}
+                            textButton={'Đăng ký'}
+                            styleTextButton={{ color: '#fff', fontSize: '15px', fontWeight: '700' }}
+                        ></ButtonComponent>
+                    </Loading>
                     <p>Bạn đã có tài khoản? <WrapperTextLight onClick={handleNavigateSignIn}>Đăng nhập</WrapperTextLight></p>
                 </WrapperContainerLeft>
                 <WrapperContainerRight>
