@@ -27,8 +27,8 @@ mongoose.connect(url)
     .then(() => {
         console.log('Connect Db success');
     })
-    .catch(() => {
-        console.log('Connect Db failed');
+    .catch((e) => {
+        console.log('Connect Db failed', e);
     })
 
 app.listen(port, () => {

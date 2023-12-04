@@ -36,7 +36,7 @@ const authUserMiddleWare = (req, res, next) => {
             next();
         }else{
             return res.status(404).json({
-                message: 'authentication not is admin',
+                message: 'authentication not is user',
                 status: 'ERROR'
             })
         }
