@@ -198,5 +198,5 @@ module.exports = {
     deleteProduct,
     getAllProduct,
     deleteManyProduct,
-    // getAllType
+    getAllType
 }
