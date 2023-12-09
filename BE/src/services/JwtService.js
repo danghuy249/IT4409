@@ -24,7 +24,6 @@ const refreshTokenService = (token) => {
         try {
             jwt.verify(token, process.env.REFRESH_TOKEN, async (err, user) => {
                 if(err){
-                    console.log('err', err);
                     resolve({
                         status: 'ERROR',
                         message: 'authentication'

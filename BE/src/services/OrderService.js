@@ -20,7 +20,7 @@ const createOrder = (newOrder) => {
                 if(productData) {
                     return {
                         status: 'OK',
-                        message: 'SUCCESS'
+                        message: 'CREATE USER SUCCESS'
                     }
                 }
                  else {
