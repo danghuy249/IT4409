@@ -1,6 +1,5 @@
 const Order = require("../models/OrderProduct")
 const Product = require("../models/ProductModel")
-// const EmailService = require("../services/EmailService")
 
 const createOrder = (newOrder) => {
     return new Promise(async (resolve, reject) => {
@@ -65,8 +64,59 @@ const createOrder = (newOrder) => {
     })
 }
 
+const getAllOrderDetails = (id) => {
+    return new Promise(async (resolve, reject) => {
+        try {
+            const order = await Order.find({
+                user: id
+            }).sort({createdAt: -1, updatedAt: -1})
+            if (order === null) {
+                resolve({
+                    status: 'ERR',
+                    message: 'The order is not defined'
+                })
+            }
+
+            resolve({
+                status: 'OK',
+                message: 'SUCESSS',
+                data: order
+            })
+        } catch (e) {
+            reject(e)
+        }
+    })
+}
+
+const getOrderDetails = (id) => {
+    return new Promise(async (resolve, reject) => {
+        try {
+            const order = await Order.findById({
+                _id: id
+            })
+            if (order === null) {
+                resolve({
+                    status: 'ERR',
+                    message: 'The order is not defined'
+                })
+            }
+
+            resolve({
+                status: 'OK',
+                message: 'SUCESSS',
+                data: order
+            })
+        } catch (e) {
+            // console.log('e', e)
+            reject(e)
+        }
+    })
+}
+
 
 
 module.exports = {
     createOrder,
+    getAllOrderDetails,
+    getOrderDetails
 }
