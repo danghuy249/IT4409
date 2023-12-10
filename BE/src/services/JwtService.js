@@ -4,10 +4,9 @@ const dotenv = require('dotenv');
 dotenv.config();
 
 const generalAccessToken = async (payload) => {
-    console.log('payload',payload)
     const access_token = jwt.sign({
         ...payload
-    }, process.env.ACCESS_TOKEN , { expiresIn: '30s'})
+    }, process.env.ACCESS_TOKEN , { expiresIn: '1d'})
     return access_token;
 }
 
