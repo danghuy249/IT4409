@@ -4,7 +4,7 @@ import { getItem } from '../../utils';
 import { UserOutlined, AppstoreOutlined } from '@ant-design/icons'
 import HeaderComponent from '../../components/HeaderComponent/HeaderComponent';
 import AdminUser from '../../components/AdminUser/AdminUser';
-import AdminProduct from '../../components/AdminProduct/AdminProduct.jsx';
+import AdminProduct from '../../components/AdminProduct/AdminProduct';
 
 const AdminPage = () => {
   const items = [
@@ -15,7 +15,7 @@ const AdminPage = () => {
   const [keySelected, setKeySelected] = useState('')
 
   const renderPage = (key) => {
-    switch(key) {
+    switch (key) {
       case 'user':
         return (
           <AdminUser />
@@ -32,7 +32,6 @@ const AdminPage = () => {
   const handleOnCLick = ({ key }) => {
     setKeySelected(key)
   }
-  console.log('keySelected', keySelected)
   return (
     <>
       <HeaderComponent isHiddenSearch isHiddenCart />
@@ -42,6 +41,7 @@ const AdminPage = () => {
           style={{
             width: 256,
             boxShadow: '1px 1px 2px #ccc',
+            height: '100vh'
           }}
           items={items}
           onClick={handleOnCLick}
