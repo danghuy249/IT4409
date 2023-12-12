@@ -5,7 +5,7 @@ import logo from '../../assets/images/logo.png';
 import { useNavigate } from 'react-router-dom';
 import { convertPrice } from '../../utils';
 const CardComponent = (props) => {
-    const {conutInStock, description, image, name, price, rating, type, selled, discount, id} = props;
+    const {countInStock, description, image, name, price, rating, type, selled, discount, id} = props;
     const navigate = useNavigate()
     const handleDetailsProduct = (id) => {
         navigate(`/product-details/${id}`)
@@ -19,7 +19,8 @@ const CardComponent = (props) => {
             }}
             bodyStyle={{ padding: '10px' }}
             cover={<img alt="example" src={image} />}
-            onClick={() => handleDetailsProduct(id)}
+            onClick={() => countInStock !== 0 && handleDetailsProduct(id)}
+            disabled={countInStock===0}
         >
             <img
                 src={logo}

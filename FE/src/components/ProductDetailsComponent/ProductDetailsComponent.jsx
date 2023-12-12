@@ -57,6 +57,7 @@ const ProductDetailsComponent = ({ idProduct }) => {
             //dùng location pathname để khi đăng nhập thành công thì vẫn ở trang đặt hàng thay vì homepage
             navigate('/sign-in', {state: location?.pathname})
         }else {
+            console.log('productDetails', productDetails)
             dispatch(addOrderProduct({
                 orderItem: {
                     name: productDetails?.name,
@@ -64,8 +65,8 @@ const ProductDetailsComponent = ({ idProduct }) => {
                     image: productDetails?.image,
                     price: productDetails?.price,
                     product: productDetails?._id,
-                    // discount: productDetails?.discount,
-                    // countInstock: productDetails?.countInStock
+                    discount: productDetails?.discount,
+                    countInstock: productDetails?.countInStock
                 }
             }))
         }
