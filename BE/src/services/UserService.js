@@ -1,14 +1,14 @@
 const { reject } = require("bcrypt/promises");
-const {User} = require("../models/index");
+const { User } = require("../models/index");
 const bcrypt = require("bcrypt");
 const { generalAccessToken, generalRefreshToken } = require("./JwtService");
 
 const userService = {
-    createUser: (newUser) => new Promise(async (resolve, reject) =>{
+    createUser: (newUser) => new Promise(async (resolve, reject) => {
         try {
             const { email, password, confirmPassword } = newUser;
-            const user = await User.findOne({where: {email}});
-            if(user) return reject(new Error(`Email ${email} already exit`));
+            const user = await User.findOne({ where: { email } });
+            if (user) return reject(new Error(`Email ${email} already exit`));
 
             const hash = bcrypt.hashSync(password, 10)
 
@@ -29,7 +29,7 @@ const userService = {
     loginUser: (userLogin) => new Promise(async (resolve, reject) => {
         const { email, password } = userLogin;
         try {
-            const user = await User.findOne({where: {email}});
+            const user = await User.findOne({ where: { email } });
             if (user === null) return reject(new Error(`Email ${email} is not exit`));
             const comparePassword = bcrypt.compareSync(password, user.password);
 
@@ -61,11 +61,11 @@ const userService = {
 
     updateUser: (id, data) => new Promise(async (resolve, reject) => {
         try {
-            const user = await User.findOne({where: {id: id}});
+            const user = await User.findOne({ where: { id: id } });
             if (user === null) return reject(new Error(`User is not exit`));
 
             const checkEmail = await User.findOne({ where: { email: data.email } });
-            
+
             if (checkEmail != null && checkEmail.id != user.id) {
                 resolve({
                     status: 'ERR',
@@ -73,14 +73,14 @@ const userService = {
                 })
             }
 
-            if(data.password){
+            if (data.password) {
                 const password = data.password;
                 data.password = bcrypt.hashSync(password, 10)
             }
 
-            await User.update(data,{ where: {id: id}});
+            await User.update(data, { where: { id: id } });
 
-            const updatedUser = await User.findOne({where: {id}});
+            const updatedUser = await User.findOne({ where: { id } });
 
             resolve({
                 status: 'OK',
@@ -95,10 +95,10 @@ const userService = {
 
     deleteUser: (id) => new Promise(async (resolve, reject) => {
         try {
-            const user = await User.findOne({where: {id: id}});
+            const user = await User.findOne({ where: { id: id } });
             if (user === null) return reject(new Error(`User is not exit`));
 
-            const deletedUser = await User.destroy({where: {id: id}});
+            const deletedUser = await User.destroy({ where: { id: id } });
 
             resolve({
                 status: 'OK',
@@ -112,7 +112,7 @@ const userService = {
     }),
     deleteManyUser: (id) => new Promise(async (resolve, reject) => {
         try {
-            await User.destroy({where: { id: ids }});
+            await User.destroy({ where: { id: ids } });
             resolve({
                 status: 'OK',
                 message: 'Delete users success',
@@ -142,9 +142,9 @@ const userService = {
     getDetailUser: (id) => {
         return new Promise(async (resolve, reject) => {
             try {
-                const user = await User.findOne({where: {id: id}});
+                const user = await User.findOne({ where: { id: id } });
 
-                if(user === null){
+                if (user === null) {
                     resolve({
                         status: 'ERR',
                         message: 'User is not exist'
