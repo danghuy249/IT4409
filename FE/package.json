@@ -19,6 +19,7 @@
     "react-router-dom": "^6.20.0",
     "react-scripts": "5.0.1",
     "react-slick": "^0.29.0",
+    "redux-persist": "^6.0.0",
     "slick-carousel": "^1.8.1",
     "styled-components": "^6.1.1",
     "web-vitals": "^2.1.4"
@@ -47,5 +48,11 @@
       "last 1 safari version"
     ]
   },
-  "proxy": "http://localhost:3001"
+  "options": {
+    "allowedHosts": [
+      "localhost",
+      ".localhost"
+    ],
+    "proxy": "https://localhost:3001/"
+  }
 }

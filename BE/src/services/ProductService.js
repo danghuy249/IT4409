@@ -111,10 +111,8 @@ const productService = {
                 order: sort
                   ? [[sort[1], sort[0]]]
                   : [['createdAt', 'DESC'], ['updatedAt', 'DESC']],
-              };
-          
+              };        
               if (filter) {
-                console.log
                 const label = filter[0];
                 const value = filter[1];
                 console.log(label, value);
